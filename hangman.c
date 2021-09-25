@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
-void abertura();
-void chuta();
-int jachutou(char letra);
-void desenhaforca();
-void escolhepalavra();
-int acertou();
-int enforcou();
+#include "hangman.h"
 
 char palavrasecreta[20];
 char chutes[26];
