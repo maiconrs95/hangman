@@ -9,6 +9,54 @@ char palavrasecreta[20];
 char chutes[26];
 int chutesdados = 0;
 
+FILE *openwordsfile(char *modes)
+{
+    FILE *f;
+
+    f = fopen("palavras.txt", modes);
+
+    if (f == 0)
+    {
+        printf("Desculpe, banco de palavras não disponível.\n\n");
+        exit(1);
+    }
+
+    return f;
+}
+
+void adicionapalavra()
+{
+    char quer;
+
+    printf("Você deseja adicionar uma nova palavra no jogo? S/N");
+    scanf(" %c", &quer);
+
+    if (quer == 'S')
+    {
+        char novapalavra[20];
+        scanf("Qual a palavra?");
+        scanf("%s", novapalavra);
+
+        FILE *f;
+
+        f = openwordsfile("r+");
+
+        int qtdpalavrasatuais;
+
+        fscanf(f, "%d", &qtdpalavrasatuais);
+
+        qtdpalavrasatuais++;
+
+        fseek(f, 0, SEEK_SET);
+        fprintf(f, "%d", qtdpalavrasatuais);
+
+        fseek(f, 0, SEEK_END);
+        fprintf(f, "\n%s", novapalavra);
+
+        fclose(f);
+    }
+}
+
 void abertura()
 {
     printf("/****************/\n");
@@ -133,4 +181,6 @@ int main()
         desenhaforca();
         chuta();
     } while (!acertou() && !enforcou());
+
+    adicionapalavra();
 }

@@ -5,3 +5,5 @@ void desenhaforca();
 void escolhepalavra();
 int acertou();
 int enforcou();
+void adicionapalavra();
+FILE *openwordsfile(char *modes);
