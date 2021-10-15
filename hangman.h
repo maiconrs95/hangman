@@ -7,3 +7,5 @@ int acertou();
 int enforcou();
 void adicionapalavra();
 FILE *openwordsfile(char *modes);
+
+#define TAMANHO_PALAVRA 20

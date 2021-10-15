@@ -1,22 +1,20 @@
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
-#include <time.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "hangman.h"
 
-char palavrasecreta[20];
+char palavrasecreta[TAMANHO_PALAVRA];
 char chutes[26];
 int chutesdados = 0;
 
-FILE *openwordsfile(char *modes)
-{
+FILE *openwordsfile(char *modes) {
     FILE *f;
 
     f = fopen("palavras.txt", modes);
 
-    if (f == 0)
-    {
+    if (f == 0) {
         printf("Desculpe, banco de palavras não disponível.\n\n");
         exit(1);
     }
@@ -24,16 +22,14 @@ FILE *openwordsfile(char *modes)
     return f;
 }
 
-void adicionapalavra()
-{
+void adicionapalavra() {
     char quer;
 
-    printf("Você deseja adicionar uma nova palavra no jogo? S/N");
+    printf("Você deseja adicionar uma nova palavra no jogo? S/N\n\n");
     scanf(" %c", &quer);
 
-    if (quer == 'S')
-    {
-        char novapalavra[20];
+    if (quer == 'S') {
+        char novapalavra[TAMANHO_PALAVRA];
         scanf("Qual a palavra?");
         scanf("%s", novapalavra);
 
@@ -57,16 +53,13 @@ void adicionapalavra()
     }
 }
 
-void abertura()
-{
+void abertura() {
     printf("/****************/\n");
     printf("/ Jogo de Forca */\n");
     printf("/****************/\n\n");
 }
 
-void chuta()
-{
-
+void chuta() {
     char chute;
     scanf(" %c", &chute);
 
@@ -74,14 +67,11 @@ void chuta()
     chutesdados++;
 }
 
-int jachutou(char letra)
-{
+int jachutou(char letra) {
     int achou = 0;
 
-    for (int j = 0; j < chutesdados; j++)
-    {
-        if (chutes[j] == letra)
-        {
+    for (int j = 0; j < chutesdados; j++) {
+        if (chutes[j] == letra) {
             achou = 1;
             break;
         }
@@ -90,35 +80,23 @@ int jachutou(char letra)
     return achou;
 }
 
-void desenhaforca()
-{
-    for (int i = 0; i < strlen(palavrasecreta); i++)
-    {
+void desenhaforca() {
+    for (int i = 0; i < strlen(palavrasecreta); i++) {
         int achou = jachutou(palavrasecreta[i]);
 
-        if (achou)
-        {
+        if (achou) {
             printf("%c ", palavrasecreta[i]);
-        }
-        else
-        {
+        } else {
             printf("_ ");
         }
     }
     printf("\n");
 }
 
-void escolhepalavra()
-{
+void escolhepalavra() {
     FILE *f;
 
-    f = fopen("palavras.txt", "r");
-
-    if (f == 0)
-    {
-        printf("Desculpe, banco de palavras não disponível.\n\n");
-        exit(1);
-    }
+    f = openwordsfile("r");
 
     int qtdpalavras;
     fscanf(f, "%d", &qtdpalavras);
@@ -126,20 +104,16 @@ void escolhepalavra()
 
     int randomico = rand() % qtdpalavras;
 
-    for (int i = 0; i <= randomico; i++)
-    {
+    for (int i = 0; i <= randomico; i++) {
         fscanf(f, "%s", palavrasecreta);
     }
 
     fclose(f);
 }
 
-int acertou()
-{
-    for (int i = 0; i < strlen(palavrasecreta); i++)
-    {
-        if (!jachutou(palavrasecreta[i]))
-        {
+int acertou() {
+    for (int i = 0; i < strlen(palavrasecreta); i++) {
+        if (!jachutou(palavrasecreta[i])) {
             return 0;
         }
     }
@@ -147,40 +121,40 @@ int acertou()
     return 1;
 }
 
-int enforcou()
-{
+int enforcou() {
     int erros = 0;
 
-    for (int i = 0; i < chutesdados; i++)
-    {
+    for (int i = 0; i < chutesdados; i++) {
         int existe = 0;
 
-        for (int j = 0; j < strlen(palavrasecreta); j++)
-        {
-            if (chutes[i] == palavrasecreta[j])
-            {
+        for (int j = 0; j < strlen(palavrasecreta); j++) {
+            if (chutes[i] == palavrasecreta[j]) {
                 existe = 1;
                 break;
             }
         }
 
-        if (!existe)
-            erros++;
+        if (!existe) erros++;
     }
 
     return erros >= 5;
 }
 
-int main()
-{
+int main() {
     escolhepalavra();
     abertura();
 
-    do
-    {
+    do {
         desenhaforca();
         chuta();
     } while (!acertou() && !enforcou());
+
+    if (acertou()) {
+        printf("Parabéns, você ganhou!!!\n\n");
+    } else {
+        printf("Puxa vida, você perdeu!!! \nA palavra secreta era '%s'\n\n",
+               palavrasecreta);
+    }
 
     adicionapalavra();
 }
