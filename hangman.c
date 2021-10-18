@@ -167,6 +167,43 @@ int chuteserrados() {
 
 int enforcou() { return chuteserrados() >= 5; }
 
+void mensagemvitoria() {
+    printf("\nParabéns, você ganhou!\n\n");
+
+    printf("       ___________      \n");
+    printf("      '._==_==_=_.'     \n");
+    printf("      .-\\:      /-.    \n");
+    printf("     | (|:.     |) |    \n");
+    printf("      '-|:.     |-'     \n");
+    printf("        \\::.    /      \n");
+    printf("         '::. .'        \n");
+    printf("           ) (          \n");
+    printf("         _.' '._        \n");
+    printf("        '-------'       \n\n");
+}
+
+void mensagemderrota() {
+    printf("\nPuxa, você foi enforcado!\n");
+    printf("A palavra era **%s**\n\n", palavrasecreta);
+
+    printf("    _______________         \n");
+    printf("   /               \\       \n");
+    printf("  /                 \\      \n");
+    printf("//                   \\/\\  \n");
+    printf("\\|   XXXX     XXXX   | /   \n");
+    printf(" |   XXXX     XXXX   |/     \n");
+    printf(" |   XXX       XXX   |      \n");
+    printf(" |                   |      \n");
+    printf(" \\__      XXX      __/     \n");
+    printf("   |\\     XXX     /|       \n");
+    printf("   | |           | |        \n");
+    printf("   | I I I I I I I |        \n");
+    printf("   |  I I I I I I  |        \n");
+    printf("   \\_             _/       \n");
+    printf("     \\_         _/         \n");
+    printf("       \\_______/           \n");
+}
+
 int main() {
     escolhepalavra();
     abertura();
@@ -177,9 +214,8 @@ int main() {
     } while (!acertou() && !enforcou());
 
     if (acertou()) {
-        printf("Parabéns, você ganhou!!!\n\n");
+        mensagemvitoria();
     } else {
-        printf("Puxa vida, você perdeu!!! \nA palavra secreta era '%s'\n\n",
-               palavrasecreta);
+        mensagemderrota();
     }
 }
