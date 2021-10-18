@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 #include "hangman.h"
 
 char palavrasecreta[TAMANHO_PALAVRA];
@@ -81,6 +82,30 @@ int jachutou(char letra) {
 }
 
 void desenhaforca() {
+    int erros = chuteserrados();
+
+    printf("  _______      \n");
+    printf(" |/      |     \n");
+    printf(" |      %c%c%c \n",
+        (erros >= 1 ? '(' : ' '),
+        (erros >= 1 ? '_' : ' '),
+        (erros >= 1 ? ')' : ' ')
+    );
+    printf(" |      %c%c%c \n",
+        (erros >= 3 ? '\\' : ' '),
+        (erros >= 2 ? '|' : ' '),
+        (erros >= 3 ? '/' : ' ')
+    );
+    printf(" |       %c    \n",
+        (erros >= 2 ? '|' : ' ')
+    );
+    printf(" |      %c %c  \n",
+        (erros >= 4 ? '/' : ' '),
+        (erros >= 4 ? '\\' : ' '));
+    printf(" |             \n");
+    printf("_|___          \n");
+    printf("\n\n");
+
     for (int i = 0; i < strlen(palavrasecreta); i++) {
         int achou = jachutou(palavrasecreta[i]);
 
@@ -121,7 +146,7 @@ int acertou() {
     return 1;
 }
 
-int enforcou() {
+int chuteserrados() {
     int erros = 0;
 
     for (int i = 0; i < chutesdados; i++) {
@@ -137,8 +162,10 @@ int enforcou() {
         if (!existe) erros++;
     }
 
-    return erros >= 5;
+    return erros;
 }
+
+int enforcou() { return chuteserrados() >= 5; }
 
 int main() {
     escolhepalavra();
@@ -155,6 +182,4 @@ int main() {
         printf("Puxa vida, você perdeu!!! \nA palavra secreta era '%s'\n\n",
                palavrasecreta);
     }
-
-    adicionapalavra();
 }
